@@ -27,7 +27,7 @@ export default function StudentGroupForm({
             name={`school.teams.${teamIndex}.${groupName}.${studentIndex}`}
             render={(_) => (<div className="flex gap-4">
               <FormItem>
-              <FormLabel>Fist Name</FormLabel>
+              <FormLabel>First Name</FormLabel>
               <FormControl>
                 <Input
                   type="text"
@@ -41,7 +41,7 @@ export default function StudentGroupForm({
               <FormMessage />
               </FormItem>
               <FormItem>
-              <FormLabel>Fist Name</FormLabel>
+              <FormLabel>Last Name</FormLabel>
               <FormControl>
                 <Input
                   type="text"

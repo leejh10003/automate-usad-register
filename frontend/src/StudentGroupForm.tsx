@@ -62,7 +62,7 @@ export default function StudentGroupForm({
                     onChange: (e) => {
                       const value = parseFloat(e.target.value)
                       if (isNaN(value)) {
-                        e.target.value = "0.0"
+                        e.target.value = "0"
                       }
                       const splitted = e.target.value.split('.')
                       if (splitted.length > 1 && splitted[1].length > 3) {

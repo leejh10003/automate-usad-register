@@ -57,6 +57,12 @@ export default function StudentGroupForm({
                   placeholder="GPA"
                   {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.gpa`, {
                     valueAsNumber: true,
+                    min: 0.0,
+                    max: 4.5,
+                    onChange: (e) => {
+                      const value = parseFloat(e.target.value)
+                      e.target.value = isNaN(value) ? "0.0" : value.toFixed(3)
+                    }
                   })}
                 />
               </FormControl>

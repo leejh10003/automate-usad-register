@@ -18,7 +18,7 @@ export default function StudentGroupForm({
 
   return (
     <div className="mt-4 gap-1">
-      <h3 className="font-semibold">{groupName.replace(/(?<=^|[.?!;:]\s*)\w/g, (_, char) => "." + char.toUpperCase())}</h3>
+      <h3 className="font-semibold">{groupName.replace(/(?<=^|[.?!;:]\s*)\w/g, (char) => char.toUpperCase())}</h3>
 
       {fields.map((_, studentIndex) => (
         <div key={studentIndex} className="flex gap-4 mt-2 items-center">

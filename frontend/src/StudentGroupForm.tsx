@@ -59,7 +59,7 @@ export default function StudentGroupForm({
               <FormControl>
                 <Input
                   type="number"
-                  step="0.01"
+                  step="0.001"
                   placeholder="GPA"
                   {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.gpa`, {
                     valueAsNumber: true,

@@ -3,6 +3,9 @@ import { Input } from "@/components/ui/input"
 import TeamForm from "./TeamForm"
 import {
   Form,
+  FormControl,
+  FormItem,
+  FormLabel,
 } from "@/components/ui/form"
 
 type Student = { firstName: string; lastName: string; gpa: number }
@@ -16,7 +19,7 @@ type FormValues = { school: School }
 
 type CustomTextFieldProps<T extends FieldValues> = UseControllerProps<T>;
 
-function CustomTextField<T extends FieldValues>({ control, name, placeholder }: CustomTextFieldProps<T> & {placeholder: string}) {
+function CustomTextField<T extends FieldValues>({ control, name, placeholder }: CustomTextFieldProps<T> & { placeholder: string }) {
   const {
     field,
     fieldState: { error }
@@ -27,10 +30,15 @@ function CustomTextField<T extends FieldValues>({ control, name, placeholder }: 
   });
 
   return (
-    <Input
-      placeholder={placeholder}
-      {...field}
-    />
+    <FormItem>
+      <FormLabel>{placeholder}</FormLabel>
+      <FormControl>
+        <Input
+          placeholder={placeholder}
+          {...field}
+        />
+      </FormControl>
+    </FormItem>
   );
 }
 

@@ -16,7 +16,7 @@ type FormValues = { school: School }
 
 type CustomTextFieldProps<T extends FieldValues> = UseControllerProps<T>;
 
-function CustomTextField<T extends FieldValues>({ control, name }: CustomTextFieldProps<T>) {
+function CustomTextField<T extends FieldValues>({ control, name, placeholder }: CustomTextFieldProps<T> & {placeholder: string}) {
   const {
     field,
     fieldState: { error }
@@ -53,7 +53,7 @@ export default function StudentForm() {
   })
 
   const onSubmit = (data: FormValues) => {
-    console.log("학교", JSON.stringify(data))
+    console.log("학교", data)
   }
 
   const newStudentGroup: () => Student[] = () => Array.from({ length: 3 }, (_) => ({
@@ -70,11 +70,12 @@ export default function StudentForm() {
   return (
     <Form {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <CustomTextField control={control} name="school.schoolName" />
-        <CustomTextField control={control} name="school.schoolAddress" />
-        <CustomTextField control={control} name="school.principalName" />
-        <CustomTextField control={control} name="school.phoneNumber" />
-        <CustomTextField control={control} name="school.faxNumber" />
+        <h2 className="text-2xl font-bold mb-4">School basic information</h2>
+        <CustomTextField placeholder="School name" control={control} name="school.schoolName" />
+        <CustomTextField placeholder="School Address" control={control} name="school.schoolAddress" />
+        <CustomTextField placeholder="Principal name" control={control} name="school.principalName" />
+        <CustomTextField placeholder="School phone number" control={control} name="school.phoneNumber" />
+        <CustomTextField placeholder="School fax number" control={control} name="school.faxNumber" />
         {fields.map((field, index) => (
           <TeamForm key={field.id} teamIndex={index} removeTeam={remove} />
         ))}

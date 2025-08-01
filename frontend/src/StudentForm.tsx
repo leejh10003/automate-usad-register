@@ -28,6 +28,7 @@ function CustomTextField<T extends FieldValues>({ control, name, placeholder }: 
 
   return (
     <Input
+      placeholder={placeholder}
       {...field}
     />
   );

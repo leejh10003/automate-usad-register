@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 
 export default function StudentGroupForm({
   teamIndex,
@@ -35,9 +35,6 @@ export default function StudentGroupForm({
                   {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.firstName`)}
                 />
               </FormControl>
-              <FormDescription>
-                This is your student's legal first name.
-              </FormDescription>
               <FormMessage />
               </FormItem>
               <FormItem>
@@ -49,9 +46,6 @@ export default function StudentGroupForm({
                   {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.lastName`)}
                 />
               </FormControl>
-              <FormDescription>
-                This is your student's legal last name.
-              </FormDescription>
               <FormMessage />
               </FormItem>
               <FormItem>
@@ -66,9 +60,6 @@ export default function StudentGroupForm({
                   })}
                 />
               </FormControl>
-              <FormDescription>
-                This is your student's GPA.
-              </FormDescription>
               <FormMessage />
             </FormItem>
             </div>)}
@@ -88,6 +79,7 @@ export default function StudentGroupForm({
         type="button"
         variant="link"
         onClick={() => append({ name: "", gpa: 0 })}
+        style={{ visibility: fields.length >= 3 ? "hidden" : "visible" }}
         disabled={fields.length >= 3}
       >
         Add student

@@ -1,4 +1,5 @@
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, useController, type FieldValues, type UseControllerProps } from "react-hook-form"
+import { Input } from "@/components/ui/input"
 import TeamForm from "./TeamForm"
 import {
   Form,
@@ -10,12 +11,40 @@ type Team = {
   scholastic?: Student[]
   varsity?: Student[]
 }
-type School = { teams: Team[] }
+type School = { teams: Team[], schoolName?: string, schoolAddress?: string, principalName?: string, phoneNumber?: string, faxNumber?: string }
 type FormValues = { school: School }
+
+type CustomTextFieldProps<T extends FieldValues> = UseControllerProps<T>;
+
+function CustomTextField<T extends FieldValues>({ control, name }: CustomTextFieldProps<T>) {
+  const {
+    field,
+    fieldState: { error }
+  } = useController({
+    name,
+    control,
+    rules: { required: true }
+  });
+
+  return (
+    <Input
+      {...field}
+    />
+  );
+}
 
 export default function StudentForm() {
   const methods = useForm<FormValues>({
-    defaultValues: { school: { teams: [] } },
+    defaultValues: {
+      school: {
+        teams: [],
+        schoolName: "",
+        schoolAddress: "",
+        principalName: "",
+        phoneNumber: "",
+        faxNumber: ""
+      }
+    },
   })
   const { control, handleSubmit } = methods
   const { fields, append, remove } = useFieldArray({
@@ -41,6 +70,11 @@ export default function StudentForm() {
   return (
     <Form {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <CustomTextField control={control} name="school.schoolName" />
+        <CustomTextField control={control} name="school.schoolAddress" />
+        <CustomTextField control={control} name="school.principalName" />
+        <CustomTextField control={control} name="school.phoneNumber" />
+        <CustomTextField control={control} name="school.faxNumber" />
         {fields.map((field, index) => (
           <TeamForm key={field.id} teamIndex={index} removeTeam={remove} />
         ))}

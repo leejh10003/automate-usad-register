@@ -27,10 +27,10 @@ export default function StudentForm() {
     console.log("학교", JSON.stringify(data))
   }
 
-  const newStudentGroup: () => Student[] = () => Array.from({ length: 3 }, (_, i) => ({
-    firstName: `Student ${i + 1}`,
-    lastName: `Last ${i + 1}`,
-    gpa: 4.0,
+  const newStudentGroup: () => Student[] = () => Array.from({ length: 3 }, (_) => ({
+    firstName: ``,
+    lastName: ``,
+    gpa: 0.0,
   }));
   const newTeam: () => Team = () => ({
     honors: newStudentGroup(),

@@ -58,10 +58,16 @@ export default function StudentGroupForm({
                   {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.gpa`, {
                     valueAsNumber: true,
                     min: 0.0,
-                    max: 4.5,
+                    max: 5.0,
                     onChange: (e) => {
                       const value = parseFloat(e.target.value)
-                      e.target.value = isNaN(value) ? "0.0" : value.toFixed(3)
+                      if (isNaN(value)) {
+                        e.target.value = "0.0"
+                      }
+                      const splitted = e.target.value.split('.')
+                      if (splitted.length > 1 && splitted[1].length > 3) {
+                        e.target.value = value.toFixed(3) // Limit to 3 decimal places
+                      }
                     }
                   })}
                 />

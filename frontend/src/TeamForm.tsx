@@ -6,7 +6,7 @@ export default function TeamForm({ teamIndex, removeTeam }: { teamIndex: number;
     <div className="border p-4 rounded">
       <h2 className="font-bold text-lg">Team {teamIndex + 1}</h2>
 
-      {(["varsity", "scholastic", "honors"] as const).map((group) => (
+      {(["honors", "scholastic", "varsity"] as const).map((group) => (
         <StudentGroupForm key={group} teamIndex={teamIndex} groupName={group} />
       ))}
 

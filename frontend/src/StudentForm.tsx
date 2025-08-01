@@ -4,7 +4,7 @@ import {
   Form,
 } from "@/components/ui/form"
 
-type Student = { name: string; gpa: number }
+type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
   honors: Student[]
   scholastic: Student[]

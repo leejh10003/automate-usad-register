@@ -24,19 +24,33 @@ export default function StudentGroupForm({
         <div key={studentIndex} className="flex gap-4 mt-2 items-center">
           <FormField
             control={control}
-            name={`school.teams.${teamIndex}.${groupName}.${studentIndex}.name`}
+            name={`school.teams.${teamIndex}.${groupName}.${studentIndex}`}
             render={(_) => (<div className="flex gap-4">
               <FormItem>
-              <FormLabel>Student Name</FormLabel>
+              <FormLabel>Fist Name</FormLabel>
               <FormControl>
                 <Input
                   type="text"
-                  placeholder="Name"
-                  {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.name`)}
+                  placeholder="First Name"
+                  {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.firstName`)}
                 />
               </FormControl>
               <FormDescription>
-                This is your student's legal name.
+                This is your student's legal first name.
+              </FormDescription>
+              <FormMessage />
+              </FormItem>
+              <FormItem>
+              <FormLabel>Fist Name</FormLabel>
+              <FormControl>
+                <Input
+                  type="text"
+                  placeholder="Last Name"
+                  {...register(`school.teams.${teamIndex}.${groupName}.${studentIndex}.lastName`)}
+                />
+              </FormControl>
+              <FormDescription>
+                This is your student's legal last name.
               </FormDescription>
               <FormMessage />
               </FormItem>

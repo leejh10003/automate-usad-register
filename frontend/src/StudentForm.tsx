@@ -6,9 +6,9 @@ import {
 
 type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
-  honors: Student[]
-  scholastic: Student[]
-  varsity: Student[]
+  honors?: Student[]
+  scholastic?: Student[]
+  varsity?: Student[]
 }
 type School = { teams: Team[] }
 type FormValues = { school: School }
@@ -27,6 +27,17 @@ export default function StudentForm() {
     console.log("학교", JSON.stringify(data))
   }
 
+  const newStudentGroup: () => Student[] = () => Array.from({ length: 3 }, (_, i) => ({
+    firstName: `Student ${i + 1}`,
+    lastName: `Last ${i + 1}`,
+    gpa: 4.0,
+  }));
+  const newTeam: () => Team = () => ({
+    honors: newStudentGroup(),
+    scholastic: newStudentGroup(),
+    varsity: newStudentGroup(),
+  })
+
   return (
     <Form {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -37,11 +48,7 @@ export default function StudentForm() {
         <button
           type="button"
           onClick={() =>
-            append({
-              varsity: [],
-              scholastic: [],
-              honors: [],
-            })
+            append(newTeam())
           }
           className="bg-blue-500 text-white px-3 py-1 rounded"
         >

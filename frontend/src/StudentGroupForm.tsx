@@ -88,6 +88,7 @@ export default function StudentGroupForm({
         type="button"
         variant="link"
         onClick={() => append({ name: "", gpa: 0 })}
+        disabled={fields.length >= 3}
       >
         Add student
       </Button>

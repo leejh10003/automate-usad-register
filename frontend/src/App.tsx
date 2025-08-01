@@ -1,5 +1,5 @@
 import StudentForm from "./StudentForm";
-import { Theme, TextField } from "@radix-ui/themes"
+import { Theme } from "@radix-ui/themes"
 
 export default () => <Theme><div className="min-h-screen flex flex-col">
   {/* 상단 포스터 */}

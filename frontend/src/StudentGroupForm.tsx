@@ -25,7 +25,7 @@ export default function StudentGroupForm({
           <FormField
             control={control}
             name={`school.teams.${teamIndex}.${groupName}.${studentIndex}.name`}
-            render={({ field }) => (<div className="flex gap-4">
+            render={(_) => (<div className="flex gap-4">
               <FormItem>
               <FormLabel>Student Name</FormLabel>
               <FormControl>

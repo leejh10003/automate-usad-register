@@ -1,8 +1,6 @@
-import { useFieldArray, useFormContext } from "react-hook-form"
 import StudentGroupForm from "./StudentGroupForm"
 
 export default function TeamForm({ teamIndex, removeTeam }: { teamIndex: number; removeTeam: (i: number) => void }) {
-  const { control } = useFormContext()
 
   return (
     <div className="border p-4 rounded">

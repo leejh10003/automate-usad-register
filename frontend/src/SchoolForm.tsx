@@ -10,6 +10,7 @@ import {
 import { Checkbox } from "radix-ui"
 import { CheckIcon } from "@radix-ui/react-icons"
 import CoachesForm from "./CoachForm"
+import { APIProvider, Map, useMapsLibrary } from '@vis.gl/react-google-maps';
 
 type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
@@ -83,6 +84,8 @@ function CustomCheckBox<T extends FieldValues>({ control, name, value }: CustomT
 }
 
 export default function StudentForm() {
+  const mapLibrary = useMapsLibrary('places');
+  mapLibrary?.SearchBox
   const methods = useForm<FormValues>({
     defaultValues: {
       school: {
@@ -134,6 +137,15 @@ export default function StudentForm() {
     <Form {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <h2 className="text-2xl font-bold mb-4">School basic information</h2>
+        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+        <Map
+          style={{width: '40vw', height: '40vw'}}
+          defaultCenter={{lat: 22.54992, lng: 0}}
+          defaultZoom={3}
+          gestureHandling={'greedy'}
+          disableDefaultUI={true}
+        />
+      </APIProvider>
         <CustomTextField placeholder="School name" control={control} name="school.schoolName" />
         <CustomTextField placeholder="School Address" control={control} name="school.schoolAddress" />
         <CustomTextField placeholder="Principal name" control={control} name="school.principalName" />

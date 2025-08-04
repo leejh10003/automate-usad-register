@@ -14,7 +14,9 @@ type Team = {
   scholastic?: Student[]
   varsity?: Student[]
 }
-type School = { teams: Team[], schoolName?: string, schoolAddress?: string, principalName?: string, phoneNumber?: string, faxNumber?: string }
+type SchoolGrade = '5th' | '6th' | '7th' | '8th' | '9th' | '10th' | '11th' | '12th';
+type SchoolEnrollment = '9th' | '10th' | '11th' | '12th';
+type School = { teams: Team[], schoolName?: string, schoolAddress?: string, principalName?: string, phoneNumber?: string, faxNumber?: string, grade: SchoolGrade[], schoolEnrollment?: SchoolEnrollment }
 type FormValues = { school: School }
 
 type CustomTextFieldProps<T extends FieldValues> = UseControllerProps<T>;
@@ -46,13 +48,18 @@ export default function StudentForm() {
   const methods = useForm<FormValues>({
     defaultValues: {
       school: {
-        teams: [],
+        teams: [{
+          honors: Array.from({ length: 3 }, () => ({ firstName: "", lastName: "", gpa: 0 })),
+          scholastic: Array.from({ length: 3 }, () => ({ firstName: "", lastName: "", gpa: 0 })),
+          varsity: Array.from({ length: 3 }, () => ({ firstName: "", lastName: "", gpa: 0 })),
+        }],
         schoolName: "",
         schoolAddress: "",
         principalName: "",
         phoneNumber: "",
-        faxNumber: ""
-      }
+        faxNumber: "",
+        grade: [],
+      } as School
     },
   })
   const { control, handleSubmit } = methods
@@ -85,6 +92,19 @@ export default function StudentForm() {
         <CustomTextField placeholder="Principal name" control={control} name="school.principalName" />
         <CustomTextField placeholder="School phone number" control={control} name="school.phoneNumber" />
         <CustomTextField placeholder="School fax number" control={control} name="school.faxNumber" />
+        <FormItem>
+          <FormLabel>School grade</FormLabel>
+          <FormControl>
+            <select
+              {...control.register("school.grade", { required: true })}
+              className="w-full p-2 border rounded"
+            >
+              {["5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"].map((grade) => (
+                <option key={grade} value={grade}>{grade}</option>
+              ))}
+            </select>
+          </FormControl>
+        </FormItem>
         {fields.map((field, index) => (
           <TeamForm key={field.id} teamIndex={index} removeTeam={remove} />
         ))}

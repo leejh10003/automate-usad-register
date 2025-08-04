@@ -1,4 +1,4 @@
-import StudentForm from "./StudentForm";
+import SchoolForm from "./SchoolForm";
 import { Theme } from "@radix-ui/themes"
 
 export default () => <Theme><div className="min-h-screen flex flex-col">
@@ -8,7 +8,7 @@ export default () => <Theme><div className="min-h-screen flex flex-col">
   {/* 폼 영역 */}
   <div className="flex-1 flex justify-center px-4">
     <div className="w-full max-w-3xl mt-8">
-      <StudentForm />
+      <SchoolForm />
     </div>
   </div>
 </div>

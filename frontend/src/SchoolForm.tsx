@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form"
 import { Checkbox } from "radix-ui"
 import { CheckIcon } from "@radix-ui/react-icons"
+import CoachesForm from "./CoachForm"
 
 type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
@@ -18,8 +19,10 @@ type Team = {
 }
 type SchoolGrade = '5th' | '6th' | '7th' | '8th' | '9th' | '10th' | '11th' | '12th';
 type SchoolEnrollment = '9th' | '10th' | '11th' | '12th';
-type School = { teams: Team[], schoolName?: string, schoolAddress?: string, principalName?: string, phoneNumber?: string, faxNumber?: string, grade: SchoolGrade[], schoolEnrollment?: SchoolEnrollment }
+type School = { teams: Team[], coaches: Coach[], schoolName?: string, schoolAddress?: string, principalName?: string, phoneNumber?: string, faxNumber?: string, grade: SchoolGrade[], schoolEnrollment?: SchoolEnrollment }
 type FormValues = { school: School }
+type CoachRole = 'primary' | 'alternate' | 'chaperon';
+type Coach = { firstName: string; lastName: string; email: string; phoneNumber: string; role: CoachRole }
 
 type CustomTextFieldProps<T extends FieldValues> = UseControllerProps<T>;
 
@@ -94,6 +97,15 @@ export default function StudentForm() {
         phoneNumber: "",
         faxNumber: "",
         grade: [],
+        coaches: [
+          {
+            firstName: "",
+            lastName: "",
+            email: "",
+            phoneNumber: "",
+            role: "primary",
+          }
+        ]
       } as School
     },
   })
@@ -142,6 +154,7 @@ export default function StudentForm() {
             </div>
           </FormControl>
         </FormItem>
+        <CoachesForm />
         {fields.map((field, index) => (
           <TeamForm key={field.id} teamIndex={index} removeTeam={remove} />
         ))}

@@ -101,6 +101,7 @@ export default function StudentForm() {
                 key={grade}
                 value={grade}
                 title={grade}
+                checked={methods.getValues("school.grade").includes(grade as SchoolGrade)}
                 {...methods.register("school.grade")}
               />
             ))}

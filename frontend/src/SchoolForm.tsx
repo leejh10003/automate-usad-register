@@ -7,10 +7,9 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form"
-import { Checkbox } from "radix-ui"
+import { Checkbox, Select } from "radix-ui"
 import { CheckIcon } from "@radix-ui/react-icons"
 import CoachesForm from "./CoachForm"
-import { APIProvider, Map, useMapsLibrary } from '@vis.gl/react-google-maps';
 
 type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
@@ -20,7 +19,127 @@ type Team = {
 }
 type SchoolGrade = '5th' | '6th' | '7th' | '8th' | '9th' | '10th' | '11th' | '12th';
 type SchoolEnrollment = '9th' | '10th' | '11th' | '12th';
-type School = { teams: Team[], coaches: Coach[], schoolName?: string, schoolAddress?: string, principalName?: string, phoneNumber?: string, faxNumber?: string, grade: SchoolGrade[], schoolEnrollment?: SchoolEnrollment }
+type School = {
+  teams: Team[],
+  coaches: Coach[],
+  schoolName?: string,
+  schoolStreetAddress?: string,
+  schoolCity?: string,
+  schoolState?: string,
+  schoolZipCode?: string,
+  principalName?: string,
+  phoneNumber?: string,
+  faxNumber?: string,
+  grade: SchoolGrade[],
+  schoolEnrollment?: SchoolEnrollment
+}
+type State =
+  | "Alabama"
+  | "Alaska"
+  | "Arizona"
+  | "Arkansas"
+  | "California"
+  | "Colorado"
+  | "Connecticut"
+  | "Delaware"
+  | "Florida"
+  | "Georgia"
+  | "Hawaii"
+  | "Idaho"
+  | "Illinois"
+  | "Indiana"
+  | "Iowa"
+  | "Kansas"
+  | "Kentucky"
+  | "Louisiana"
+  | "Maine"
+  | "Maryland"
+  | "Massachusetts"
+  | "Michigan"
+  | "Minnesota"
+  | "Mississippi"
+  | "Missouri"
+  | "Montana"
+  | "Nebraska"
+  | "Nevada"
+  | "New Hampshire"
+  | "New Jersey"
+  | "New Mexico"
+  | "New York"
+  | "North Carolina"
+  | "North Dakota"
+  | "Ohio"
+  | "Oklahoma"
+  | "Oregon"
+  | "Pennsylvania"
+  | "Rhode Island"
+  | "South Carolina"
+  | "South Dakota"
+  | "Tennessee"
+  | "Texas"
+  | "Utah"
+  | "Vermont"
+  | "Virginia"
+  | "Washington"
+  | "West Virginia"
+  | "Wisconsin"
+  | "Wyoming"
+type StateWithAbbreviation = {
+  state: State;
+  abbrevation: string;
+}
+const statesWithAbbreviations: StateWithAbbreviation[] = [
+  { state: "Alabama", abbrevation: "AL" },
+  { state: "Alaska", abbrevation: "AK" },
+  { state: "Arizona", abbrevation: "AZ" },
+  { state: "Arkansas", abbrevation: "AR" },
+  { state: "California", abbrevation: "CA" },
+  { state: "Colorado", abbrevation: "CO" },
+  { state: "Connecticut", abbrevation: "CT" },
+  { state: "Delaware", abbrevation: "DE" },
+  { state: "Florida", abbrevation: "FL" },
+  { state: "Georgia", abbrevation: "GA" },
+  { state: "Hawaii", abbrevation: "HI" },
+  { state: "Idaho", abbrevation: "ID" },
+  { state: "Illinois", abbrevation: "IL" },
+  { state: "Indiana", abbrevation: "IN" },
+  { state: "Iowa", abbrevation: "IA" },
+  { state: "Kansas", abbrevation: "KS" },
+  { state: "Kentucky", abbrevation: "KY" },
+  { state: "Louisiana", abbrevation: "LA" },
+  { state: "Maine", abbrevation: "ME" },
+  { state: "Maryland", abbrevation: "MD" },
+  { state: "Massachusetts", abbrevation: "MA" },
+  { state: "Michigan", abbrevation: "MI" },
+  { state: "Minnesota", abbrevation: "MN" },
+  { state: "Mississippi", abbrevation: "MS" },
+  { state: "Missouri", abbrevation: "MO" },
+  { state: "Montana", abbrevation: "MT" },
+  { state: "Nebraska", abbrevation: "NE" },
+  { state: "Nevada", abbrevation: "NV" },
+  { state: "New Hampshire", abbrevation: "NH" },
+  { state: "New Jersey", abbrevation: "NJ" },
+  { state: "New Mexico", abbrevation: "NM" },
+  { state: "New York", abbrevation: "NY" },
+  { state: "North Carolina", abbrevation: "NC" },
+  { state: "North Dakota", abbrevation: "ND" },
+  { state: "Ohio", abbrevation: "OH" },
+  { state: "Oklahoma", abbrevation: "OK" },
+  { state: "Oregon", abbrevation: "OR" },
+  { state: "Pennsylvania", abbrevation: "PA" },
+  { state: "Rhode Island", abbrevation: "RI" },
+  { state: "South Carolina", abbrevation: "SC" },
+  { state: "South Dakota", abbrevation: "SD" },
+  { state: "Tennessee", abbrevation: "TN" },
+  { state: "Texas", abbrevation: "TX" },
+  { state: "Utah", abbrevation: "UT" },
+  { state: "Vermont", abbrevation: "VT" },
+  { state: "Virginia", abbrevation: "VA" },
+  { state: "Washington", abbrevation: "WA" },
+  { state: "West Virginia", abbrevation: "WV" },
+  { state: "Wisconsin", abbrevation: "WI" },
+  { state: "Wyoming", abbrevation: "WY" },
+]
 type FormValues = { school: School }
 type CoachRole = 'primary' | 'alternate' | 'chaperon';
 type Coach = { firstName: string; lastName: string; email: string; phoneNumber: string; role: CoachRole }
@@ -48,6 +167,35 @@ function CustomTextField<T extends FieldValues>({ control, name, placeholder }: 
       </FormControl>
     </FormItem>
   );
+}
+
+function SearchableSelect<T extends FieldValues, OptionType extends { value: string, displayString: string, searchString: string }>({ control, name, options, placeholderString }: CustomTextFieldProps<T> & { options: OptionType[], placeholderString: string }) {
+  const {
+    field,
+    fieldState: { error }
+  } = useController({
+    name,
+    control,
+    rules: { required: true }
+  });
+  return <Select.Root {...field}>
+    <Select.Trigger className="SelectTrigger">
+      <Select.Value placeholder={placeholderString} />
+    </Select.Trigger>
+    <Select.Portal>
+      <Select.Content className="SelectContent">
+        <Select.ScrollUpButton />
+        <Select.Viewport className="SelectViewport">
+          {options.map((option) => (
+            <Select.Item key={option.value} value={option.value} className="SelectItem">
+              <Select.ItemText>{option.displayString}</Select.ItemText>
+            </Select.Item>
+          ))}
+        </Select.Viewport>
+        <Select.ScrollDownButton />
+      </Select.Content>
+    </Select.Portal>
+  </Select.Root>
 }
 
 function CustomCheckBox<T extends FieldValues>({ control, name, value }: CustomTextFieldProps<T> & { value: string }) {
@@ -84,8 +232,6 @@ function CustomCheckBox<T extends FieldValues>({ control, name, value }: CustomT
 }
 
 export default function StudentForm() {
-  const mapLibrary = useMapsLibrary('places');
-  mapLibrary?.SearchBox
   const methods = useForm<FormValues>({
     defaultValues: {
       school: {
@@ -137,32 +283,44 @@ export default function StudentForm() {
     <Form {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <h2 className="text-2xl font-bold mb-4">School basic information</h2>
-        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-        <Map
-          style={{width: '40vw', height: '40vw'}}
-          defaultCenter={{lat: 22.54992, lng: 0}}
-          defaultZoom={3}
-          gestureHandling={'greedy'}
-          disableDefaultUI={true}
-        />
-      </APIProvider>
         <CustomTextField placeholder="School name" control={control} name="school.schoolName" />
-        <CustomTextField placeholder="School Address" control={control} name="school.schoolAddress" />
+        <FormItem>
+          <FormLabel>School address</FormLabel>
+          <FormControl>
+            <div className="flex gap-4">
+              <CustomTextField placeholder="Street address" control={control} name="school.schoolStreetAddress" />
+              <CustomTextField placeholder="City" control={control} name="school.schoolCity" />
+              <FormItem>
+                <FormLabel>State</FormLabel>
+                <FormControl>
+                  <SearchableSelect control={control} placeholderString="Select State..." name="school.schoolState" options={statesWithAbbreviations.map(state => ({
+                    value: state.abbrevation,
+                    displayString: state.state,
+                    searchString: `${state.state.toLowerCase()} - ${state.abbrevation.toLowerCase()}`,
+                  }))} />
+                </FormControl>
+              </FormItem>
+              <CustomTextField placeholder="Zip code" control={control} name="school.schoolZipCode" />
+            </div>
+          </FormControl>
+        </FormItem>
         <CustomTextField placeholder="Principal name" control={control} name="school.principalName" />
-        <CustomTextField placeholder="School phone number" control={control} name="school.phoneNumber" />
-        <CustomTextField placeholder="School fax number" control={control} name="school.faxNumber" />
+        <div className="flex gap-4 mt-2 items-center">
+          <CustomTextField placeholder="School phone number" control={control} name="school.phoneNumber" />
+          <CustomTextField placeholder="School fax number" control={control} name="school.faxNumber" />
+        </div>
         <FormItem>
           <FormLabel>School grade</FormLabel>
           <FormControl>
-            <div style={{display: "flex", flexWrap: "wrap", gap: "24px"}}>
-            {["5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"].map((grade) => (
-              <CustomCheckBox
-                key={grade}
-                control={control}
-                name="school.grade"
-                value={grade as SchoolGrade}
-              />
-            ))}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "24px" }}>
+              {["5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"].map((grade) => (
+                <CustomCheckBox
+                  key={grade}
+                  control={control}
+                  name="school.grade"
+                  value={grade as SchoolGrade}
+                />
+              ))}
             </div>
           </FormControl>
         </FormItem>

@@ -7,6 +7,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form"
+import { CheckboxGroup, Checkbox } from "@radix-ui/themes"
 
 type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
@@ -95,14 +96,14 @@ export default function StudentForm() {
         <FormItem>
           <FormLabel>School grade</FormLabel>
           <FormControl>
-            <select
-              {...control.register("school.grade", { required: true })}
-              className="w-full p-2 border rounded"
-            >
-              {["5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"].map((grade) => (
-                <option key={grade} value={grade}>{grade}</option>
-              ))}
-            </select>
+            {["5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"].map((grade) => (
+              <Checkbox
+                key={grade}
+                value={grade}
+                title={grade}
+                {...methods.register("school.grade")}
+              />
+            ))}
           </FormControl>
         </FormItem>
         {fields.map((field, index) => (

@@ -10,7 +10,7 @@ import {
 import { Checkbox, Select } from "radix-ui"
 import { CheckIcon } from "@radix-ui/react-icons"
 import CoachesForm from "./CoachForm"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import _ from "lodash"
 
 type Student = { firstName: string; lastName: string; gpa: number }

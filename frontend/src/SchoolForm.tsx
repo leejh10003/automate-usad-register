@@ -10,6 +10,8 @@ import {
 import { Checkbox, Select } from "radix-ui"
 import { CheckIcon } from "@radix-ui/react-icons"
 import CoachesForm from "./CoachForm"
+import { useEffect, useRef, useState } from "react"
+import _ from "lodash"
 
 type Student = { firstName: string; lastName: string; gpa: number }
 type Team = {
@@ -178,15 +180,23 @@ function SearchableSelect<T extends FieldValues, OptionType extends { value: str
     control,
     rules: { required: true }
   });
+  const [filteredOptions, setFilteredOptions] = useState<OptionType[]>(options);
   return <Select.Root {...field}>
     <Select.Trigger className="SelectTrigger">
       <Select.Value placeholder={placeholderString} />
     </Select.Trigger>
     <Select.Portal>
-      <Select.Content className="SelectContent" position="popper">
+      <Select.Content className="SelectContent" position="popper" style={{padding: "8px"}}>
+        <Input
+          type="text"
+          placeholder="Search..."
+          className="SelectSearchInput"
+          onChange={(input) => _.debounce(() => setFilteredOptions(options.filter((e) => e.searchString.toLowerCase().includes(input.target.value.trim().toLowerCase()))), 500)()}
+          onKeyDown={(e) => e.stopPropagation()}
+        />
         <Select.ScrollUpButton />
         <Select.Viewport className="SelectViewport">
-          {options.map((option) => (
+          {filteredOptions.map((option) => (
             <Select.Item key={option.value} value={option.value} className="SelectItem">
               <Select.ItemText>{option.displayString}</Select.ItemText>
             </Select.Item>

@@ -183,7 +183,7 @@ function SearchableSelect<T extends FieldValues, OptionType extends { value: str
       <Select.Value placeholder={placeholderString} />
     </Select.Trigger>
     <Select.Portal>
-      <Select.Content className="SelectContent">
+      <Select.Content className="SelectContent" position="popper">
         <Select.ScrollUpButton />
         <Select.Viewport className="SelectViewport">
           {options.map((option) => (
